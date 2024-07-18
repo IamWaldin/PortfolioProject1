@@ -1,9 +1,13 @@
-select *
+--IN THIS DATA CLEANING PROJECT WE WILL BE CLEANING THE DATA FROM THE GIVEN DATASET TO 
+--MAKE IT MORE READABLE AS WELL AS USABLE,PLEASE FOLLOW BELOW AND PAY ATTENTION TO 
+--COMMENTS WHICH HAS THE DESCRIPTION OF THE QUERY THAT FOLLOWS BELOW
+
+Select *
 from PortfolioProject.dbo.NashvilleHousing
 
 --STANDARDIZE DATE FORMAT
 
-select SaleDateConverted, CONVERT(date, SaleDate)
+Select SaleDateConverted, CONVERT(date, SaleDate)
 from PortfolioProject.dbo.NashvilleHousing
 
 Select NashvilleHousing
@@ -22,7 +26,7 @@ add SaleDateConverted Date;
 --POPULATE PROPERTY ADDRESS DATA
 
 
-select *
+Select *
 from PortfolioProject.dbo.NashvilleHousing
 WHERE PropertyAddress IS NULL
 ORDER BY ParcelID
@@ -36,7 +40,7 @@ JOIN PortfolioProject.dbo.NashvilleHousing b
 	where a.PropertyAddress is null
 
 
-Update a
+Update 
 SET PropertyAddress = ISNULL(a.PropertyAddress,b.PropertyAddress)
 from PortfolioProject.dbo.NashvilleHousing a
 JOIN PortfolioProject.dbo.NashvilleHousing b
@@ -46,7 +50,7 @@ JOIN PortfolioProject.dbo.NashvilleHousing b
 --BREAKING OUT ADDRESS INTO INDIVIDUAL COLUMNS (ADDRESS,CITY, STATE)
 
 
-select PropertyAddress
+Select PropertyAddress
 from PortfolioProject.dbo.NashvilleHousing
 --WHERE PropertyAddress IS NULL
 --ORDER BY ParcelID
@@ -69,7 +73,7 @@ SET PropertysplitCity = SUBSTRING(PropertyAddress, CHARINDEX(',', PropertyAddres
 Select *
 from PortfolioProject.dbo.NashvilleHousing
 
-select
+Select
 PARSENAME(REPLACE(OwnerAddress, ',', '.') , 3)
 ,PARSENAME(REPLACE(OwnerAddress, ',', '.') , 2)
 ,PARSENAME(REPLACE(OwnerAddress, ',', '.') , 1)
@@ -95,7 +99,7 @@ ADD OwnerSplitState nvarchar(255);
 Update NashvilleHousing
 SET OwnerSplitState = PARSENAME(REPLACE(OwnerAddress, ',', '.') , 3)
 
-select*
+Select*
 from PortfolioProject.dbo.NashvilleHousing
 
 
@@ -106,7 +110,7 @@ from PortfolioProject.dbo.NashvilleHousing
 group by SoldAsVacant
 order by 2
 
-select SoldAsVacant
+Select SoldAsVacant
 , case when SoldAsVacant = 'Y' then 'YES'
 	   when SoldAsVacant = 'N' then 'NO'
 	   ELSE SoldAsVacant
@@ -137,7 +141,7 @@ SELECT *,
 FROM PortfolioProject.dbo.NashvilleHousing
 --ORDER BY ParcelID
 )
-sELECT *
+Select *
 from RowNumCTE
 Where row_num > 1
 order by PropertyAddress
